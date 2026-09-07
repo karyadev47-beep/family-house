@@ -1,0 +1,228 @@
+{
+  "app_context": {
+    "type": "dashboard / saas_app (multi-tenant family management)",
+    "name": "KeluargaKita (OpenFamily ID Edition)",
+    "language": "Bahasa Indonesia",
+    "currency": "IDR (Rupiah - Rp)",
+    "emotional_archetype": "ARCHETYPE 1: ORGANIC & EARTHY + SWISS UTILITY (Trust, Warmth, Harmony, Clarity)",
+    "description": "A modern multi-family management platform inspired by OpenFamily. Built with clean, minimalist shadcn/ui SaaS aesthetics, high information density, generous spacing, precise role-based permissions, and intuitive family switching."
+  },
+  "theme_and_colors": {
+    "theme_mode": "Light mode primary with Dark mode support via toggle",
+    "design_system": "shadcn/ui CSS Semantic Variables",
+    "color_tokens": {
+      "light": {
+        "background": "hsl(40, 20%, 98%)",
+        "foreground": "hsl(20, 14.3%, 4.1%)",
+        "card": "hsl(0, 0%, 100%)",
+        "card_foreground": "hsl(20, 14.3%, 4.1%)",
+        "popover": "hsl(0, 0%, 100%)",
+        "popover_foreground": "hsl(20, 14.3%, 4.1%)",
+        "primary": "hsl(158, 42%, 26%)",
+        "primary_foreground": "hsl(0, 0%, 98%)",
+        "secondary": "hsl(35, 30%, 93%)",
+        "secondary_foreground": "hsl(20, 14.3%, 4.1%)",
+        "muted": "hsl(35, 15%, 92%)",
+        "muted_foreground": "hsl(25, 8.5%, 42%)",
+        "accent": "hsl(158, 30%, 92%)",
+        "accent_foreground": "hsl(158, 45%, 20%)",
+        "destructive": "hsl(0, 72%, 51%)",
+        "destructive_foreground": "hsl(0, 0%, 98%)",
+        "border": "hsl(35, 15%, 88%)",
+        "input": "hsl(35, 15%, 88%)",
+        "ring": "hsl(158, 42%, 26%)"
+      },
+      "dark": {
+        "background": "hsl(20, 14.3%, 4.1%)",
+        "foreground": "hsl(60, 9.1%, 97.8%)",
+        "card": "hsl(20, 14.3%, 6.5%)",
+        "card_foreground": "hsl(60, 9.1%, 97.8%)",
+        "popover": "hsl(20, 14.3%, 6.5%)",
+        "popover_foreground": "hsl(60, 9.1%, 97.8%)",
+        "primary": "hsl(158, 45%, 40%)",
+        "primary_foreground": "hsl(20, 14.3%, 4.1%)",
+        "secondary": "hsl(20, 10%, 14%)",
+        "secondary_foreground": "hsl(60, 9.1%, 97.8%)",
+        "muted": "hsl(20, 10%, 14%)",
+        "muted_foreground": "hsl(24, 5.4%, 63.9%)",
+        "accent": "hsl(158, 25%, 16%)",
+        "accent_foreground": "hsl(158, 50%, 70%)",
+        "destructive": "hsl(0, 62.8%, 30.6%)",
+        "destructive_foreground": "hsl(60, 9.1%, 97.8%)",
+        "border": "hsl(20, 10%, 16%)",
+        "input": "hsl(20, 10%, 16%)",
+        "ring": "hsl(158, 45%, 40%)"
+      }
+    },
+    "chart_colors": {
+      "chart_1": "hsl(158, 42%, 35%)",
+      "chart_2": "hsl(32, 80%, 55%)",
+      "chart_3": "hsl(200, 60%, 45%)",
+      "chart_4": "hsl(280, 50%, 55%)",
+      "chart_5": "hsl(340, 65%, 55%)"
+    },
+    "forbidden_colors": [
+      "#1B93A4 (Teal green/blue dashboard anti-pattern)",
+      "#7351B7 (Generic AI purple)"
+    ]
+  },
+  "typography": {
+    "heading_font": "Plus Jakarta Sans / Outfit / System Sans",
+    "body_font": "Inter / System Sans",
+    "mono_font": "JetBrains Mono / Source Code Pro",
+    "scale": {
+      "h1": "text-2xl sm:text-3xl font-bold tracking-tight",
+      "h2": "text-xl sm:text-2xl font-semibold tracking-tight",
+      "h3": "text-lg font-semibold",
+      "body": "text-sm sm:text-base leading-relaxed",
+      "caption": "text-xs text-muted-foreground",
+      "code": "font-mono text-xs"
+    }
+  },
+  "layout_and_navigation": {
+    "sidebar_structure": {
+      "header": "Brand Logo + Family Switcher Dropdown (Command Dialog inside Popover/Dropdown)",
+      "navigation_groups": [
+        {
+          "title": "Utama",
+          "items": [
+            { "label": "Dasbor", "icon": "LayoutDashboard", "path": "/dashboard" }
+          ]
+        },
+        {
+          "title": "Keuangan",
+          "items": [
+            { "label": "Ikhtisar", "icon": "PieChart", "path": "/finance/overview" },
+            { "label": "Transaksi", "icon": "ArrowLeftRight", "path": "/finance/transactions" },
+            { "label": "Anggaran", "icon": "Wallet", "path": "/finance/budget" },
+            { "label": "Target Tabungan", "icon": "Target", "path": "/finance/goals" }
+          ]
+        },
+        {
+          "title": "Jurnal & Catatan",
+          "items": [
+            { "label": "Jurnal Saya", "icon": "BookOpen", "path": "/journal/my" },
+            { "label": "Jurnal Keluarga", "icon": "Users", "path": "/journal/family" },
+            { "label": "Kalender Jurnal", "icon": "Calendar", "path": "/journal/calendar" }
+          ]
+        },
+        {
+          "title": "Manajemen Keluarga",
+          "items": [
+            { "label": "Anggota Keluarga", "icon": "UserCheck", "path": "/family/members" },
+            { "label": "Undangan", "icon": "MailPlus", "path": "/family/invitations" },
+            { "label": "Permintaan Bergabung", "icon": "UserPlus", "path": "/family/requests" },
+            { "label": "Log Aktivitas (Audit)", "icon": "History", "path": "/family/audit" }
+          ]
+        },
+        {
+          "title": "Perencanaan",
+          "items": [
+            { "label": "Tugas & Jadwal", "icon": "CheckSquare", "path": "/planning/tasks" },
+            { "label": "Kalender Acara", "icon": "CalendarDays", "path": "/planning/calendar" },
+            { "label": "Daftar Belanja", "icon": "ShoppingCart", "path": "/planning/shopping" }
+          ]
+        },
+        {
+          "title": "Pengaturan",
+          "items": [
+            { "label": "Pengaturan Keluarga", "icon": "Settings", "path": "/settings" }
+          ]
+        }
+      ],
+      "footer": "User Profile Avatar + Role Badge + Dark/Light Theme Toggle + Exit/Logout"
+    },
+    "mobile_responsive": "Sheet component for Mobile Navigation Drawer triggered via Menu Hamburger button in Sticky Top Bar."
+  },
+  "key_features_design_specs": {
+    "family_switcher": {
+      "location": "Top of Sidebar",
+      "component": "Dropdown Menu with embedded Command search or Select with Combobox",
+      "features": [
+        "Current active family display with avatar/badge",
+        "Search family input",
+        "Switch family in 1-click (updates app scope globally)",
+        "Actions: '+ Buat Keluarga Baru' dialog, '🔑 Gabung via Kode' dialog"
+      ]
+    },
+    "roles_and_permissions": {
+      "roles": [
+        { "name": "Pemilik (Owner)", "badge_variant": "default", "color": "bg-emerald-700 text-white" },
+        { "name": "Orang Tua (Parent)", "badge_variant": "secondary", "color": "bg-blue-600 text-white" },
+        { "name": "Anggota (Member)", "badge_variant": "outline", "color": "border-slate-300 text-slate-700" },
+        { "name": "Anak (Child)", "badge_variant": "destructive", "color": "bg-amber-500 text-white" }
+      ],
+      "permission_matrix_table": "Included in Settings > Permissions tab with toggles for budget access, journal visibility, task creation, and invite permissions."
+    },
+    "invitation_and_join_flow": {
+      "invite_dialog": "Generates 8-character unique alphanumeric code (e.g. KEL-89F2A) with 1-click Copy Code, QR Code display, and email input option.",
+      "join_dialog": "Input field for join code with auto-formatting and immediate preview of target family name.",
+      "join_requests_table": "Data Table with Accept / Reject buttons and role assignment dropdown."
+    },
+    "finance_management": {
+      "currency_format": "IDR (e.g., Rp 15.500.000)",
+      "components": [
+        "Balance, Monthly Income, Monthly Expense Summary Cards",
+        "Category Budget Progress Bars with warning indicators when >80%",
+        "Interactive Transactions Data Table with Search, Filter by Category/Member, Add Expense Dialog",
+        "Savings Goals with Progress Rings and Target Dates"
+      ]
+    },
+    "journal_system": {
+      "types": ["Pribadi (My Journal)", "Keluarga (Family Shared)"],
+      "features": [
+        "Mood selection (😊 Senang, 😐 Biasa, 😔 Sedih, 🚀 Bersemangat, 😴 Lelah)",
+        "Tagging family members",
+        "Calendar view grid with daily journal entries indicator"
+      ]
+    },
+    "settings_tabs": {
+      "tabs": ["Umum", "Anggota & Peran", "Undangan & Kode", "Izin Akses", "Transfer Kepemilikan (Danger Zone)"],
+      "ownership_transfer": "Requires double confirmation modal with typing family name verification."
+    }
+  },
+  "media_assets": {
+    "hero_and_avatars": [
+      {
+        "category": "family_avatar_1",
+        "url": "https://images.unsplash.com/photo-1643240143978-9563c3760ca4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwyfHxoYXBweSUyMGZhbWlseSUyMHBvcnRyYWl0JTIwd2FybXxlbnwwfHx8fDE3ODg3Njc3OTN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Keluarga Pratama Portrait"
+      },
+      {
+        "category": "family_avatar_2",
+        "url": "https://images.unsplash.com/photo-1731932776998-e809d58fbc06?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGZhbWlseSUyMHBvcnRyYWl0JTIwd2FybXxlbnwwfHx8fDE3ODg3Njc3OTN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Keluarga Santoso Portrait"
+      },
+      {
+        "category": "family_avatar_3",
+        "url": "https://images.unsplash.com/photo-1738748710157-698869ce0ad9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwzfHxoYXBweSUyMGZhbWlseSUyMHBvcnRyYWl0JTIwd2FybXxlbnwwfHx8fDE3ODg3Njc3OTN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Keluarga Wijaya Portrait"
+      }
+    ]
+  },
+  "testing_and_accessibility": {
+    "data_testid_convention": "All interactive elements (buttons, inputs, dropdowns, tabs, dialog triggers) MUST include a kebab-case data-testid attribute.",
+    "examples": [
+      "data-testid=\"family-switcher-trigger\"",
+      "data-testid=\"family-switcher-option-keluarga-pratama\"",
+      "data-testid=\"invite-member-button\"",
+      "data-testid=\"join-family-code-input\"",
+      "data-testid=\"submit-join-code-button\"",
+      "data-testid=\"add-transaction-button\"",
+      "data-testid=\"transaction-category-select\"",
+      "data-testid=\"journal-mood-happy-button\"",
+      "data-testid=\"transfer-ownership-button\"",
+      "data-testid=\"sidebar-nav-finance-budget\""
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Strictly use shadcn/ui components: Sidebar, Navigation Menu, Button, Card, Avatar, Badge, Dialog, Alert Dialog, Dropdown Menu, Sheet, Select, Combobox, Command, Input, Textarea, Label, Form, Tabs, Table, Data Table, Calendar, Date Picker, Popover, Tooltip, Sonner, Progress, Separator, Skeleton, Scroll Area.",
+    "Do NOT use Material UI, Ant Design, Chakra, Bootstrap, or DaisyUI.",
+    "Ensure all monetary amounts use IDR currency format (e.g. 'Rp 12.500.000').",
+    "All interface text must be in Bahasa Indonesia (e.g., Dasbor, Keuangan, Anggota, Undangan, Perencanaan, Pengaturan).",
+    "Implement Family Switcher context state so changing the active family instantly updates dashboard stats, budget, members list, journal, and tasks.",
+    "Use Lucide-React icons exclusively.",
+    "Support toast notifications via Sonner (`toast.success(...)`, `toast.error(...)`).",
+    "Ensure generous padding (p-4 to p-8) and cardless/subtle bordered container styling to maintain a premium SaaS look."
+  ]
+}
