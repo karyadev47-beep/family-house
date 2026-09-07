@@ -247,6 +247,7 @@ class MealIn(BaseModel):
     date: Optional[str] = None
     ingredients: List[str] = []
     notes: Optional[str] = ""
+    cost: float = 0
 
 
 # ---------------------------------------------------------------------------
@@ -868,7 +869,7 @@ async def create_meal(fid: str, body: MealIn, user: dict = Depends(get_current_u
     m = {"id": new_id(), "family_id": fid, "user_id": user["id"], "author_name": user["name"],
          "title": body.title, "meal_type": body.meal_type,
          "date": body.date or now_iso(), "ingredients": body.ingredients or [],
-         "notes": body.notes or "", "done": False, "created_at": now_iso()}
+         "notes": body.notes or "", "cost": body.cost or 0, "done": False, "created_at": now_iso()}
     await db.meals.insert_one(m)
     await log_activity(fid, user, "meal.created", f"{user['name']} merencanakan menu '{body.title}'")
     return clean(dict(m))
