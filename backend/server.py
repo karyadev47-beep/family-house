@@ -97,6 +97,8 @@ ACTION_ROLES = {
     "task.manage": {"owner", "parent"},
     "calendar.manage": {"owner", "parent"},
     "shopping.manage": {"owner", "parent", "member"},
+    "meal.create": {"owner", "parent", "member"},
+    "meal.manage": {"owner", "parent"},
     "view": {"owner", "parent", "member", "child"},
 }
 
@@ -237,6 +239,14 @@ class ShoppingIn(BaseModel):
     name: str
     quantity: int = 1
     category: Optional[str] = "Lainnya"
+
+
+class MealIn(BaseModel):
+    title: str
+    meal_type: Literal["sarapan", "makan_siang", "makan_malam", "camilan"] = "makan_siang"
+    date: Optional[str] = None
+    ingredients: List[str] = []
+    notes: Optional[str] = ""
 
 
 # ---------------------------------------------------------------------------
@@ -839,6 +849,50 @@ async def toggle_shopping(fid: str, sid: str, user: dict = Depends(get_current_u
 async def delete_shopping(fid: str, sid: str, user: dict = Depends(get_current_user)):
     await require(fid, user, "shopping.manage")
     await db.shopping_items.delete_one({"id": sid, "family_id": fid})
+    return {"ok": True}
+
+
+# ---------------------------------------------------------------------------
+# Meal Prep
+# ---------------------------------------------------------------------------
+@api.get("/families/{fid}/meals")
+async def list_meals(fid: str, user: dict = Depends(get_current_user)):
+    await get_membership(fid, user["id"])
+    meals = await db.meals.find({"family_id": fid}).sort("date", 1).to_list(1000)
+    return [clean(m) for m in meals]
+
+
+@api.post("/families/{fid}/meals")
+async def create_meal(fid: str, body: MealIn, user: dict = Depends(get_current_user)):
+    await require(fid, user, "meal.create")
+    m = {"id": new_id(), "family_id": fid, "user_id": user["id"], "author_name": user["name"],
+         "title": body.title, "meal_type": body.meal_type,
+         "date": body.date or now_iso(), "ingredients": body.ingredients or [],
+         "notes": body.notes or "", "done": False, "created_at": now_iso()}
+    await db.meals.insert_one(m)
+    await log_activity(fid, user, "meal.created", f"{user['name']} merencanakan menu '{body.title}'")
+    return clean(dict(m))
+
+
+@api.patch("/families/{fid}/meals/{mid}")
+async def toggle_meal(fid: str, mid: str, user: dict = Depends(get_current_user)):
+    await get_membership(fid, user["id"])
+    m = await db.meals.find_one({"id": mid, "family_id": fid})
+    if not m:
+        raise HTTPException(status_code=404, detail="Menu tidak ditemukan")
+    await db.meals.update_one({"id": mid}, {"$set": {"done": not m.get("done", False)}})
+    return {"done": not m.get("done", False)}
+
+
+@api.delete("/families/{fid}/meals/{mid}")
+async def delete_meal(fid: str, mid: str, user: dict = Depends(get_current_user)):
+    m = await db.meals.find_one({"id": mid, "family_id": fid})
+    if not m:
+        raise HTTPException(status_code=404, detail="Menu tidak ditemukan")
+    mem = await get_membership(fid, user["id"])
+    if m["user_id"] != user["id"] and not can(mem["role"], "meal.manage"):
+        raise HTTPException(status_code=403, detail="Tidak memiliki izin menghapus menu ini")
+    await db.meals.delete_one({"id": mid})
     return {"ok": True}
 
 

@@ -14,7 +14,6 @@ export function InviteMemberDialog({ trigger, onCreated }) {
   const { activeId, activeFamily } = useFamily();
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState("member");
-  const [email, setEmail] = useState("");
   const [expires, setExpires] = useState("7");
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -26,7 +25,7 @@ export function InviteMemberDialog({ trigger, onCreated }) {
     setBusy(true);
     try {
       const { data } = await api.post(`/families/${activeId}/invitations`, {
-        role, email, expires_days: Number(expires),
+        role, expires_days: Number(expires),
       });
       setResult(data);
       onCreated?.();
@@ -46,7 +45,7 @@ export function InviteMemberDialog({ trigger, onCreated }) {
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
-  const reset = () => { setResult(null); setEmail(""); setRole("member"); setExpires("7"); };
+  const reset = () => { setResult(null); setRole("member"); setExpires("7"); };
 
   return (
     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset(); }}>
@@ -56,13 +55,9 @@ export function InviteMemberDialog({ trigger, onCreated }) {
           <>
             <DialogHeader>
               <DialogTitle>Undang Anggota Keluarga</DialogTitle>
-              <DialogDescription>Undang seseorang untuk bergabung ke {activeFamily?.name}.</DialogDescription>
+              <DialogDescription>Buat kode undangan untuk bergabung ke {activeFamily?.name}.</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-2">
-              <div className="space-y-2">
-                <Label>Email (opsional)</Label>
-                <Input data-testid="invite-email-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nama@email.com" />
-              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label>Peran</Label>

@@ -42,6 +42,10 @@ transactions, budgets, goals, journal_entries (private/family), tasks, calendar_
 ## Verified
 26/26 backend pytest pass; all frontend flows verified (testing agent iteration_1). Tests at `/app/backend/tests/test_keluargakita.py`.
 
+## Update (2026-06)
+- Invitations are now **code-only** (email field removed from the invite dialog; joining is by code → user enters the family).
+- New **Meal Prep** feature (`/planning/meals`): plan dishes with meal type (sarapan/makan siang/makan malam/camilan), date, ingredient list, notes; mark as cooked; delete (author or owner/parent); "Ke Belanja" button pushes all ingredients into the Shopping list. Backend collection `meals`, endpoints GET/POST/PATCH/DELETE `/api/families/{fid}/meals` with meal.create (owner/parent/member) and meal.manage (owner/parent). Sidebar item added under Perencanaan.
+
 ## Backlog / TODO (P2, optional)
 - Use invitation `code_hash` for lookup instead of plaintext (currently plaintext for re-copy UX).
 - True multi-doc Mongo transaction for transfer (needs replica set); current ordering avoids ownerless state.

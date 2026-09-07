@@ -21,6 +21,7 @@ import Requests from "@/pages/family/Requests";
 import Audit from "@/pages/family/Audit";
 import Tasks from "@/pages/planning/Tasks";
 import CalendarPage from "@/pages/planning/Calendar";
+import Meals from "@/pages/planning/Meals";
 import Shopping from "@/pages/planning/Shopping";
 import Settings from "@/pages/Settings";
 import JoinPage from "@/pages/JoinPage";
@@ -64,6 +65,7 @@ function App() {
                         <Route path="/family/audit" element={<Audit />} />
                         <Route path="/planning/tasks" element={<Tasks />} />
                         <Route path="/planning/calendar" element={<CalendarPage />} />
+                        <Route path="/planning/meals" element={<Meals />} />
                         <Route path="/planning/shopping" element={<Shopping />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="*" element={<Navigate to="/dashboard" replace />} />

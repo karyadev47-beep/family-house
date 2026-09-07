@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, PieChart, ArrowLeftRight, Wallet, Target,
   BookOpen, Users, Calendar, UserCheck, MailPlus, UserPlus, History,
-  CheckSquare, CalendarDays, ShoppingCart, Settings, HeartHandshake,
+  CheckSquare, CalendarDays, ShoppingCart, Settings, HeartHandshake, ChefHat,
 } from "lucide-react";
 
 const GROUPS = [
@@ -41,6 +41,7 @@ const GROUPS = [
     items: [
       { label: "Tugas & Jadwal", icon: CheckSquare, path: "/planning/tasks" },
       { label: "Kalender Acara", icon: CalendarDays, path: "/planning/calendar" },
+      { label: "Meal Prep", icon: ChefHat, path: "/planning/meals" },
       { label: "Daftar Belanja", icon: ShoppingCart, path: "/planning/shopping" },
     ],
   },

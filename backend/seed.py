@@ -153,6 +153,25 @@ async def run_seed(db):
         {"id": nid(), "family_id": fam1["id"], "name": "Sabun cuci", "quantity": 1, "category": "Kebersihan", "bought": False, "created_at": iso()},
     ])
 
+    # ------- meal prep -------
+    await db.meals.insert_many([
+        {"id": nid(), "family_id": fam1["id"], "user_id": siti["id"], "author_name": "Siti Fernanda",
+         "title": "Nasi goreng spesial", "meal_type": "makan_malam",
+         "date": iso(now() + timedelta(days=1)), "done": False,
+         "ingredients": ["2 piring nasi", "3 butir telur", "Bawang merah & putih", "Kecap manis", "Ayam suwir"],
+         "notes": "Tambahkan acar timun sebagai pelengkap.", "created_at": iso()},
+        {"id": nid(), "family_id": fam1["id"], "user_id": yogi["id"], "author_name": "Yogi Fernanda",
+         "title": "Sup ayam hangat", "meal_type": "makan_siang",
+         "date": iso(now() + timedelta(days=2)), "done": False,
+         "ingredients": ["1 ekor ayam", "Wortel", "Kentang", "Daun bawang & seledri", "Kaldu ayam"],
+         "notes": "", "created_at": iso()},
+        {"id": nid(), "family_id": fam1["id"], "user_id": budi["id"], "author_name": "Budi Fernanda",
+         "title": "Roti bakar cokelat", "meal_type": "sarapan",
+         "date": iso(now()), "done": True,
+         "ingredients": ["Roti tawar", "Cokelat meses", "Mentega", "Susu kental manis"],
+         "notes": "Menu andalan pagi hari.", "created_at": iso()},
+    ])
+
     # ------- invitations & join requests -------
     await db.invitations.insert_one({
         "id": nid(), "family_id": fam1["id"], "code": code("KEL"),
