@@ -21,11 +21,11 @@ export default function Members() {
   const { user } = useAuth();
   const { data: members, reload } = useResource(activeId ? `/families/${activeId}/members` : null, [activeId]);
   const [roleDialog, setRoleDialog] = useState(null);
-  const [newRole, setNewRole] = useState("member");
+  const [newRole, setNewRole] = useState("child");
   const myRole = activeFamily?.my_role;
-  const canRemove = myRole === "owner";
-  const canChangeRole = myRole === "owner";
-  const canInvite = ["owner", "parent"].includes(myRole);
+  const canRemove = myRole === "husband";
+  const canChangeRole = myRole === "husband";
+  const canInvite = ["husband", "wife"].includes(myRole);
 
   const active = (members || []).filter((m) => m.status === "active");
 
@@ -59,7 +59,7 @@ export default function Members() {
                 <p className="truncate text-sm text-muted-foreground">{m.email}</p>
                 <div className="mt-1.5"><RoleBadge role={m.role} /></div>
               </div>
-              {m.role !== "owner" && (canRemove || canChangeRole) && (
+              {m.role !== "husband" && (canRemove || canChangeRole) && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8" data-testid={`member-actions-${m.id}`}><MoreHorizontal className="h-4 w-4" /></Button></DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
@@ -91,8 +91,7 @@ export default function Members() {
             <Select value={newRole} onValueChange={setNewRole}>
               <SelectTrigger data-testid="change-role-select"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="parent">Orang Tua</SelectItem>
-                <SelectItem value="member">Anggota</SelectItem>
+                <SelectItem value="wife">Istri</SelectItem>
                 <SelectItem value="child">Anak</SelectItem>
               </SelectContent>
             </Select>

@@ -18,7 +18,7 @@ export default function Requests() {
   const pending = (reqs || []).filter((r) => r.status === "pending");
 
   const approve = async (r) => {
-    try { await api.post(`/families/${activeId}/join-requests/${r.id}/approve`, { role: "member" }); toast.success(`${r.user_name} disetujui`); reload(); }
+    try { await api.post(`/families/${activeId}/join-requests/${r.id}/approve`, { role: "child" }); toast.success(`${r.user_name} disetujui`); reload(); }
     catch (e) { toast.error(apiError(e)); }
   };
   const reject = async (r) => {
@@ -42,7 +42,7 @@ export default function Requests() {
                     <p className="font-medium">{r.user_name} <span className="text-sm font-normal text-muted-foreground">ingin bergabung</span></p>
                     <p className="text-sm text-muted-foreground">{r.user_email} · {timeAgo(r.created_at)}</p>
                     {r.message && <p className="mt-1 text-sm italic text-muted-foreground">"{r.message}"</p>}
-                    <Badge variant="outline" className="mt-1.5">Anggota</Badge>
+                    <Badge variant="outline" className="mt-1.5">Anak</Badge>
                   </div>
                 </div>
                 <div className="flex gap-2">

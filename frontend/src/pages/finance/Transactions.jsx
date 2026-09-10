@@ -24,7 +24,7 @@ export default function Transactions() {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [filterCat, setFilterCat] = useState("all");
-  const canManage = ["owner", "parent"].includes(activeFamily?.my_role);
+  const canManage = ["husband", "wife"].includes(activeFamily?.my_role);
   const [form, setForm] = useState({ description: "", category: "Makanan", amount: "", type: "expense" });
 
   const submit = async () => {

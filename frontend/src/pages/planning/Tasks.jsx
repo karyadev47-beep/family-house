@@ -24,7 +24,7 @@ export default function Tasks() {
   const { data: members } = useResource(activeId ? `/families/${activeId}/members` : null, [activeId]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ title: "", assignee_id: "", due_date: "", priority: "medium" });
-  const canManage = ["owner", "parent"].includes(activeFamily?.my_role);
+  const canManage = ["husband", "wife"].includes(activeFamily?.my_role);
   const active = (members || []).filter((m) => m.status === "active");
 
   const submit = async () => {

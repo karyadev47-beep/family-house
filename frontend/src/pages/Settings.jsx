@@ -21,19 +21,21 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const MATRIX = [
-  { label: "Lihat data keluarga", roles: { owner: true, parent: true, member: true, child: true } },
-  { label: "Kelola transaksi", roles: { owner: true, parent: true, member: false, child: false } },
-  { label: "Buat transaksi", roles: { owner: true, parent: true, member: true, child: false } },
-  { label: "Kelola anggaran", roles: { owner: true, parent: true, member: false, child: false } },
-  { label: "Undang anggota", roles: { owner: true, parent: true, member: false, child: false } },
-  { label: "Setujui permintaan", roles: { owner: true, parent: true, member: false, child: false } },
-  { label: "Keluarkan anggota", roles: { owner: true, parent: false, member: false, child: false } },
-  { label: "Ubah peran", roles: { owner: true, parent: false, member: false, child: false } },
-  { label: "Transfer kepemilikan", roles: { owner: true, parent: false, member: false, child: false } },
-  { label: "Hapus keluarga", roles: { owner: true, parent: false, member: false, child: false } },
+  { label: "Lihat data keluarga", roles: { husband: true, wife: true, child: true } },
+  { label: "Kelola transaksi", roles: { husband: true, wife: true, child: false } },
+  { label: "Buat transaksi", roles: { husband: true, wife: true, child: false } },
+  { label: "Kelola anggaran", roles: { husband: true, wife: true, child: false } },
+  { label: "Undang anggota", roles: { husband: true, wife: true, child: false } },
+  { label: "Setujui permintaan", roles: { husband: true, wife: true, child: false } },
+  { label: "Kelola tugas & menu", roles: { husband: true, wife: true, child: false } },
+  { label: "Tulis jurnal, tugas & menu", roles: { husband: true, wife: true, child: true } },
+  { label: "Keluarkan anggota", roles: { husband: true, wife: false, child: false } },
+  { label: "Ubah peran", roles: { husband: true, wife: false, child: false } },
+  { label: "Transfer kepala keluarga", roles: { husband: true, wife: false, child: false } },
+  { label: "Hapus keluarga", roles: { husband: true, wife: false, child: false } },
 ];
-const ROLE_COLS = ["owner", "parent", "member", "child"];
-const ROLE_HEAD = { owner: "Pemilik", parent: "Orang Tua", member: "Anggota", child: "Anak" };
+const ROLE_COLS = ["husband", "wife", "child"];
+const ROLE_HEAD = { husband: "Kepala Keluarga", wife: "Istri", child: "Anak" };
 
 export default function Settings() {
   const { activeId, activeFamily, refresh } = useFamily();
@@ -44,7 +46,7 @@ export default function Settings() {
   const [description, setDescription] = useState("");
   const [newOwner, setNewOwner] = useState("");
   const [confirmName, setConfirmName] = useState("");
-  const isOwner = activeFamily?.my_role === "owner";
+  const isOwner = activeFamily?.my_role === "husband";
   const active = (members || []).filter((m) => m.status === "active");
   const others = active.filter((m) => m.user_id !== user?.id);
 
@@ -68,7 +70,7 @@ export default function Settings() {
       await api.post(`/families/${activeId}/transfer`, { new_owner_id: newOwner });
       await refresh();
       await reloadMembers();
-      toast.success("Kepemilikan dialihkan. Anda kini menjadi Orang Tua.");
+      toast.success("Kepala keluarga dialihkan. Anda kini menjadi Istri.");
       setNewOwner("");
     } catch (e) { toast.error(apiError(e)); }
   };
@@ -169,20 +171,20 @@ export default function Settings() {
 
         <TabsContent value="danger" className="pt-4">
           {!isOwner ? (
-            <Card><CardContent className="p-6 text-sm text-muted-foreground">Hanya Pemilik yang dapat mengakses zona ini.</CardContent></Card>
+            <Card><CardContent className="p-6 text-sm text-muted-foreground">Hanya Kepala Keluarga yang dapat mengakses zona ini.</CardContent></Card>
           ) : (
             <div className="space-y-4">
               <Card className="border-destructive/40">
-                <CardHeader><CardTitle className="text-base flex items-center gap-2"><ShieldAlert className="h-4 w-4 text-destructive" />Transfer Kepemilikan</CardTitle><CardDescription>Setelah transfer, Anda akan menjadi Orang Tua.</CardDescription></CardHeader>
+                <CardHeader><CardTitle className="text-base flex items-center gap-2"><ShieldAlert className="h-4 w-4 text-destructive" />Transfer Kepala Keluarga</CardTitle><CardDescription>Setelah transfer, Anda akan menjadi Istri.</CardDescription></CardHeader>
                 <CardContent className="space-y-3">
                   <Select value={newOwner} onValueChange={setNewOwner}>
-                    <SelectTrigger data-testid="transfer-owner-select" className="max-w-sm"><SelectValue placeholder="Pilih pemilik baru" /></SelectTrigger>
+                    <SelectTrigger data-testid="transfer-owner-select" className="max-w-sm"><SelectValue placeholder="Pilih kepala keluarga baru" /></SelectTrigger>
                     <SelectContent>{others.map((m) => <SelectItem key={m.user_id} value={m.user_id}>{m.name}</SelectItem>)}</SelectContent>
                   </Select>
                   <AlertDialog>
-                    <AlertDialogTrigger asChild><Button variant="destructive" disabled={!newOwner} data-testid="transfer-ownership-button">Transfer Kepemilikan</Button></AlertDialogTrigger>
+                    <AlertDialogTrigger asChild><Button variant="destructive" disabled={!newOwner} data-testid="transfer-ownership-button">Transfer Kepala Keluarga</Button></AlertDialogTrigger>
                     <AlertDialogContent>
-                      <AlertDialogHeader><AlertDialogTitle>Transfer kepemilikan?</AlertDialogTitle><AlertDialogDescription>Anda akan berubah menjadi Orang Tua dan tidak lagi menjadi Pemilik. Tindakan ini tidak dapat dibatalkan.</AlertDialogDescription></AlertDialogHeader>
+                      <AlertDialogHeader><AlertDialogTitle>Transfer kepala keluarga?</AlertDialogTitle><AlertDialogDescription>Anda akan berubah menjadi Istri dan tidak lagi menjadi Kepala Keluarga. Tindakan ini tidak dapat dibatalkan.</AlertDialogDescription></AlertDialogHeader>
                       <AlertDialogFooter><AlertDialogCancel>Batal</AlertDialogCancel><AlertDialogAction onClick={transfer} data-testid="transfer-ownership-confirm">Transfer</AlertDialogAction></AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>

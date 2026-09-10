@@ -26,9 +26,8 @@ export const timeAgo = (iso) => {
 };
 
 export const ROLE_META = {
-  owner: { label: "Pemilik", className: "bg-primary text-primary-foreground" },
-  parent: { label: "Orang Tua", className: "bg-chart-3 text-white" },
-  member: { label: "Anggota", className: "bg-secondary text-secondary-foreground border border-border" },
+  husband: { label: "Kepala Keluarga", className: "bg-primary text-primary-foreground" },
+  wife: { label: "Istri", className: "bg-chart-3 text-white" },
   child: { label: "Anak", className: "bg-chart-2 text-white" },
 };
 

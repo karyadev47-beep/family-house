@@ -66,13 +66,13 @@ async def run_seed(db):
                 "status": status, "joined_at": iso(), "created_at": iso(), "updated_at": iso()}
 
     await db.family_members.insert_many([
-        mem(fam1["id"], yogi["id"], "owner"),
-        mem(fam1["id"], siti["id"], "parent"),
-        mem(fam1["id"], budi["id"], "member"),
+        mem(fam1["id"], yogi["id"], "husband"),
+        mem(fam1["id"], siti["id"], "wife"),
+        mem(fam1["id"], budi["id"], "child"),
         mem(fam1["id"], ani["id"], "child"),
-        mem(fam2["id"], yogi["id"], "owner"),
-        mem(fam2["id"], siti["id"], "member"),
-        mem(fam2["id"], budi["id"], "member"),
+        mem(fam2["id"], yogi["id"], "husband"),
+        mem(fam2["id"], siti["id"], "child"),
+        mem(fam2["id"], budi["id"], "child"),
     ])
 
     # ------- budgets (fam1) -------
@@ -175,13 +175,13 @@ async def run_seed(db):
     # ------- invitations & join requests -------
     await db.invitations.insert_one({
         "id": nid(), "family_id": fam1["id"], "code": code("KEL"),
-        "code_hash": "", "role": "member", "email": "paman@keluarga.id",
+        "code_hash": "", "role": "child", "email": "paman@keluarga.id",
         "invited_by": yogi["id"], "invited_by_name": "Yogi Fernanda",
         "status": "pending", "used": False,
         "expires_at": iso(now() + timedelta(days=7)), "created_at": iso()})
     await db.join_requests.insert_one({
         "id": nid(), "family_id": fam1["id"], "user_id": ani["id"], "user_name": "Bibi Rina",
-        "user_email": "rina@keluarga.id", "role": "member", "status": "pending",
+        "user_email": "rina@keluarga.id", "role": "child", "status": "pending",
         "message": "Ingin ikut mengatur keuangan keluarga.", "created_at": iso()})
 
     # ------- activity log -------

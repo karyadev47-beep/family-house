@@ -19,7 +19,7 @@ export default function Goals() {
   const { data: goals, reload } = useResource(activeId ? `/families/${activeId}/goals` : null, [activeId]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: "", target_amount: "", current_amount: "", target_date: "" });
-  const canManage = ["owner", "parent"].includes(activeFamily?.my_role);
+  const canManage = ["husband", "wife"].includes(activeFamily?.my_role);
 
   const submit = async () => {
     if (!form.name || !form.target_amount) return toast.error("Lengkapi data target");

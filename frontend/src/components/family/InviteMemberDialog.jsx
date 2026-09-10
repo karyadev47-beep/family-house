@@ -13,7 +13,7 @@ import { Copy, MessageCircle, Check } from "lucide-react";
 export function InviteMemberDialog({ trigger, onCreated }) {
   const { activeId, activeFamily } = useFamily();
   const [open, setOpen] = useState(false);
-  const [role, setRole] = useState("member");
+  const [role, setRole] = useState("child");
   const [expires, setExpires] = useState("7");
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -64,8 +64,7 @@ export function InviteMemberDialog({ trigger, onCreated }) {
                   <Select value={role} onValueChange={setRole}>
                     <SelectTrigger data-testid="invite-role-select"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="parent">Orang Tua</SelectItem>
-                      <SelectItem value="member">Anggota</SelectItem>
+                      <SelectItem value="wife">Istri</SelectItem>
                       <SelectItem value="child">Anak</SelectItem>
                     </SelectContent>
                   </Select>

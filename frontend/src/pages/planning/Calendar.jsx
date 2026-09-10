@@ -19,7 +19,7 @@ export default function CalendarPage() {
   const { data: events, reload } = useResource(activeId ? `/families/${activeId}/events` : null, [activeId]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ title: "", description: "", date: "" });
-  const canManage = ["owner", "parent"].includes(activeFamily?.my_role);
+  const canManage = ["husband", "wife"].includes(activeFamily?.my_role);
 
   const submit = async () => {
     if (!form.title || !form.date) return toast.error("Judul dan tanggal wajib diisi");

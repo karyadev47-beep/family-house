@@ -21,7 +21,7 @@ export default function Budget() {
   const { data: budgets, reload } = useResource(activeId ? `/families/${activeId}/budgets` : null, [activeId]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ category: "Makanan", limit: "" });
-  const canManage = ["owner", "parent"].includes(activeFamily?.my_role);
+  const canManage = ["husband", "wife"].includes(activeFamily?.my_role);
 
   const submit = async () => {
     if (!form.limit) return toast.error("Isi limit anggaran");

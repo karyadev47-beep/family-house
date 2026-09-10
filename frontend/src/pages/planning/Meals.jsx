@@ -87,7 +87,7 @@ export default function Meals() {
       toast.success(`${m.ingredients.length} bahan ditambahkan ke daftar belanja`);
     } catch (e) { toast.error(apiError(e)); }
   };
-  const canDelete = (m) => m.user_id === user?.id || ["owner", "parent"].includes(activeFamily?.my_role);
+  const canDelete = (m) => m.user_id === user?.id || ["husband", "wife"].includes(activeFamily?.my_role);
 
   return (
     <div className="space-y-6" data-testid="meals-page">

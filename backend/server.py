@@ -77,29 +77,29 @@ def clean(doc: dict) -> dict:
 # ---------------------------------------------------------------------------
 # Permission matrix
 # ---------------------------------------------------------------------------
-ROLES = ["owner", "parent", "member", "child"]
-ROLE_LABEL = {"owner": "Pemilik", "parent": "Orang Tua", "member": "Anggota", "child": "Anak"}
+ROLES = ["husband", "wife", "child"]
+ROLE_LABEL = {"husband": "Kepala Keluarga", "wife": "Istri", "child": "Anak"}
 
 ACTION_ROLES = {
-    "family.edit": {"owner"},
-    "family.delete": {"owner"},
-    "member.invite": {"owner", "parent"},
-    "request.approve": {"owner", "parent"},
-    "member.remove": {"owner"},
-    "member.role_change": {"owner"},
-    "ownership.transfer": {"owner"},
-    "budget.manage": {"owner", "parent"},
-    "goal.manage": {"owner", "parent"},
-    "transaction.create": {"owner", "parent", "member"},
-    "transaction.manage": {"owner", "parent"},
-    "journal.create": {"owner", "parent", "member"},
-    "task.create": {"owner", "parent", "member"},
-    "task.manage": {"owner", "parent"},
-    "calendar.manage": {"owner", "parent"},
-    "shopping.manage": {"owner", "parent", "member"},
-    "meal.create": {"owner", "parent", "member"},
-    "meal.manage": {"owner", "parent"},
-    "view": {"owner", "parent", "member", "child"},
+    "family.edit": {"husband"},
+    "family.delete": {"husband"},
+    "member.invite": {"husband", "wife"},
+    "request.approve": {"husband", "wife"},
+    "member.remove": {"husband"},
+    "member.role_change": {"husband"},
+    "ownership.transfer": {"husband"},
+    "budget.manage": {"husband", "wife"},
+    "goal.manage": {"husband", "wife"},
+    "transaction.create": {"husband", "wife"},
+    "transaction.manage": {"husband", "wife"},
+    "journal.create": {"husband", "wife", "child"},
+    "task.create": {"husband", "wife", "child"},
+    "task.manage": {"husband", "wife"},
+    "calendar.manage": {"husband", "wife"},
+    "shopping.manage": {"husband", "wife", "child"},
+    "meal.create": {"husband", "wife", "child"},
+    "meal.manage": {"husband", "wife"},
+    "view": {"husband", "wife", "child"},
 }
 
 
@@ -172,7 +172,7 @@ class FamilyIn(BaseModel):
 
 
 class InviteIn(BaseModel):
-    role: Literal["parent", "member", "child"] = "member"
+    role: Literal["wife", "child"] = "child"
     email: Optional[str] = ""
     expires_days: int = 7
 
@@ -187,7 +187,7 @@ class JoinRequestIn(BaseModel):
 
 
 class RoleIn(BaseModel):
-    role: Literal["parent", "member", "child"]
+    role: Literal["wife", "child"]
 
 
 class TransferIn(BaseModel):
@@ -297,7 +297,7 @@ async def _create_family_for(user: dict, name: str, description="") -> dict:
     await db.families.insert_one(fam)
     await db.family_members.insert_one({
         "id": new_id(), "family_id": fam["id"], "user_id": user["id"],
-        "role": "owner", "status": "active", "joined_at": now_iso(),
+        "role": "husband", "status": "active", "joined_at": now_iso(),
         "created_at": now_iso(), "updated_at": now_iso()})
     await log_activity(fam["id"], user, "family.created", f"{user['name']} membuat keluarga")
     return fam
@@ -387,9 +387,9 @@ async def transfer_ownership(fid: str, body: TransferIn, user: dict = Depends(ge
     if not target:
         raise HTTPException(status_code=400, detail="Anggota tujuan tidak valid")
     # atomic-ish role swap; no family without owner
-    await db.family_members.update_one({"id": target["id"]}, {"$set": {"role": "owner", "updated_at": now_iso()}})
+    await db.family_members.update_one({"id": target["id"]}, {"$set": {"role": "husband", "updated_at": now_iso()}})
     await db.family_members.update_one(
-        {"family_id": fid, "user_id": user["id"]}, {"$set": {"role": "parent", "updated_at": now_iso()}})
+        {"family_id": fid, "user_id": user["id"]}, {"$set": {"role": "wife", "updated_at": now_iso()}})
     await db.families.update_one({"id": fid}, {"$set": {"owner_id": body.new_owner_id, "updated_at": now_iso()}})
     tu = await db.users.find_one({"id": body.new_owner_id})
     await log_activity(fid, user, "ownership.transferred",
@@ -412,8 +412,8 @@ async def change_role(fid: str, mid: str, body: RoleIn, user: dict = Depends(get
     m = await db.family_members.find_one({"id": mid, "family_id": fid})
     if not m:
         raise HTTPException(status_code=404, detail="Anggota tidak ditemukan")
-    if m["role"] == "owner":
-        raise HTTPException(status_code=400, detail="Tidak bisa mengubah peran pemilik")
+    if m["role"] == "husband":
+        raise HTTPException(status_code=400, detail="Tidak bisa mengubah peran Kepala Keluarga")
     await db.family_members.update_one({"id": mid}, {"$set": {"role": body.role, "updated_at": now_iso()}})
     tu = await db.users.find_one({"id": m["user_id"]})
     await log_activity(fid, user, "member.role_changed",
@@ -427,8 +427,8 @@ async def remove_member(fid: str, mid: str, user: dict = Depends(get_current_use
     m = await db.family_members.find_one({"id": mid, "family_id": fid})
     if not m:
         raise HTTPException(status_code=404, detail="Anggota tidak ditemukan")
-    if m["role"] == "owner":
-        raise HTTPException(status_code=400, detail="Pemilik tidak dapat dikeluarkan")
+    if m["role"] == "husband":
+        raise HTTPException(status_code=400, detail="Kepala Keluarga tidak dapat dikeluarkan")
     await db.family_members.update_one({"id": mid}, {"$set": {"status": "removed", "updated_at": now_iso()}})
     tu = await db.users.find_one({"id": m["user_id"]})
     await log_activity(fid, user, "member.removed", f"{user['name']} mengeluarkan {tu['name']}")
@@ -542,7 +542,7 @@ async def create_join_request(body: JoinRequestIn, user: dict = Depends(get_curr
         raise HTTPException(status_code=400, detail="Permintaan Anda sudah menunggu persetujuan")
     req = {"id": new_id(), "family_id": fam["id"], "user_id": user["id"],
            "user_name": user["name"], "user_email": user["email"],
-           "role": "member", "status": "pending", "message": body.message or "",
+           "role": "child", "status": "pending", "message": body.message or "",
            "created_at": now_iso()}
     await db.join_requests.insert_one(req)
     await log_activity(fam["id"], user, "join_request.created",
@@ -563,7 +563,7 @@ async def approve_request(fid: str, rid: str, body: RoleIn = None, user: dict = 
     req = await db.join_requests.find_one({"id": rid, "family_id": fid})
     if not req or req["status"] != "pending":
         raise HTTPException(status_code=404, detail="Permintaan tidak ditemukan")
-    role = body.role if body else req.get("role", "member")
+    role = body.role if body else req.get("role", "child")
     existing = await db.family_members.find_one({"family_id": fid, "user_id": req["user_id"]})
     if existing:
         await db.family_members.update_one({"id": existing["id"]}, {"$set": {
@@ -948,6 +948,13 @@ async def startup():
     await db.invitations.create_index("code")
     from seed import run_seed
     await run_seed(db)
+    # migrate legacy roles -> husband/wife/child (nuclear family model)
+    await db.family_members.update_many({"role": "owner"}, {"$set": {"role": "husband"}})
+    await db.family_members.update_many({"role": "parent"}, {"$set": {"role": "wife"}})
+    await db.family_members.update_many({"role": "member"}, {"$set": {"role": "child"}})
+    await db.invitations.update_many({"role": "parent"}, {"$set": {"role": "wife"}})
+    await db.invitations.update_many({"role": {"$in": ["member", "owner"]}}, {"$set": {"role": "child"}})
+    await db.join_requests.update_many({"role": {"$in": ["owner", "parent", "member"]}}, {"$set": {"role": "child"}})
 
 
 @app.on_event("shutdown")
